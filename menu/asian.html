@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Menu</title><link href="../../css/main.css" rel="stylesheet"><link href="../../css/menu/asian.css" rel="stylesheet"></head><body><div id="enc_data" style="display:none">455e021c05430218081c1d76471a5b5b422e0b081001415f7e55075f75242a7d74786f2f233b265f4e1c5851647715476750553d0712552106021d190a4e685443141b18615e49054d695d5b0d0618756f</div><script type="module">import { isLoggedIn } from '../js/auth.js';
+                        
+                        function decrypt(text, key) {
+                            let result = "";
+                            for(let i=0; i<text.length; i+=2) {
+                                result += String.fromCharCode(parseInt(text.substr(i, 2), 16) ^ key.charCodeAt((i/2) % key.length));
+                            }
+                            return result;
+                        }
+
+                        if (!isLoggedIn()) {
+                            window.location.replace("../login.html");
+                        } else {
+                            const dec = decrypt(document.getElementById('enc_data').innerText, "ObfuscationKey456");
+                            document.body.innerHTML = dec;
+                            document.body.querySelectorAll("script").forEach(old => {
+                                const newS = document.createElement("script");
+                                Array.from(old.attributes).forEach(a => newS.setAttribute(a.name, a.value));
+                                newS.appendChild(document.createTextNode(old.innerHTML));
+                                old.parentNode.replaceChild(newS, old);
+                            });
+                        }</script></body></html>
