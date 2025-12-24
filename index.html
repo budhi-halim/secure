@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport"><title>System</title><link href="css/main.css" rel="stylesheet"></head><body><div id="enc_data" style="display:none">455e021c05430218081c1d76471a5b5b422e0b081001415f7e55075f75243a7770651c422127322d35312d53412354473e094671311f0607060c543c0102240612515118734d164b795f051d1f4f0d27040a470814220708005e0f08071d4d50415918145d442a045b571e060f01460e1d2204171a5d42220e444b32100815074f232e0b0c081a5771685a5a170a174a6353412f0c0f0a3f0a3c01141c03175f7e494f4e6b4559141555200c151a1f064f1806084669321c5856592207463414060f00474d47706f59141516734d1516010a11005765</div><script type="module">import { isLoggedIn } from 'js/auth.js';
+                        
+                        function decrypt(text, key) {
+                            let result = "";
+                            for(let i=0; i<text.length; i+=2) {
+                                result += String.fromCharCode(parseInt(text.substr(i, 2), 16) ^ key.charCodeAt((i/2) % key.length));
+                            }
+                            return result;
+                        }
+
+                        if (!isLoggedIn()) {
+                            window.location.replace("login.html");
+                        } else {
+                            const dec = decrypt(document.getElementById('enc_data').innerText, "ObfuscationKey456");
+                            document.body.innerHTML = dec;
+                            document.body.querySelectorAll("script").forEach(old => {
+                                const newS = document.createElement("script");
+                                Array.from(old.attributes).forEach(a => newS.setAttribute(a.name, a.value));
+                                newS.appendChild(document.createTextNode(old.innerHTML));
+                                old.parentNode.replaceChild(newS, old);
+                            });
+                        }</script></body></html>

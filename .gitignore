@@ -1,0 +1,8 @@
+/.qodo
+/.venv
+/build.py
+/dev
+/generate_keys.py
+/node_modules
+/package-lock.json
+/package.json
